@@ -16,6 +16,7 @@ export class LoginService {
     return this.httpClient.post<LoginResponseModel>(this.baseUrl, loginModel, { observe: 'response'}).pipe(map(response => {
       const authKey = response.headers.get("Authorization")!;
       let body = response.body!;
+      localStorage.setItem('token', authKey);
       body.authKey = authKey;
       return body;
     }));
