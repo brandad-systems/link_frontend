@@ -1,27 +1,34 @@
-<div class="hidden sm:block h-[10rem] bg-link-green " ></div>
+<div class="hidden sm:block h-[10rem] bg-link-green "></div>
 
-<div class="grid place-content-center justify-items-center">
-  <img src="./assets/images/logo.svg" class="h-[9rem] w-[9rem] sm:mt-[17rem] mt-[8.2rem]"/>
-  <h1 class="font-link-font  text-[4.8rem] tracking-[0.2em] leading-[4rem]">LINK.</h1>
-  <form #loginForm="ngForm" (submit)="onSubmit()" class="grid justify-items-center">
-    <div>
-      <label hidden for="email">E-mail</label>
-      <input name="email" id="email" #email="ngModel" [(ngModel)]="loginModel.username" type="text"
-             placeholder="E-Mail" class="rounded-[1rem] w-[32.6rem] h-[3.6rem] text-[1.8rem] font-link-font border-black border mt-[6.3rem] px-[1.3rem]"/>
-    </div>
-    <div>
-      <label hidden for="password">Password</label>
-      <input name="password" id="password" #password="ngModel" [(ngModel)]="loginModel.password" type="password"
-             placeholder="Password" class="rounded-[1rem] w-[32.6rem] h-[3.6rem] text-[1.8rem] font-link-font border-black border mt-[1.7rem] px-[1.3rem]"/>
-    </div>
-
-    <button type="submit" class="sm:bg-link-green rounded-[1rem]  sm:w-[20rem] w-[32.6rem] h-[3.6rem] text-[1.8rem] font-link-font mt-[1.7rem] border-black border sm:border-0 ">Einloggen</button>
-
-    <div *ngIf="errorMessage">
-      <p class="font-link-font mt-[1.7rem] text-[1.8rem] text-red-600 w-[32.6rem] ">
-        {{errorMessage}}
-      </p>
-    </div>
-  </form>
+<div class="grid place-content-center">
+  <div class="grid justify-items-center w-screen sm:w-[32.6rem] px-[4rem]">
+    <img src="./assets/images/logo.svg" class="h-[9rem] w-[9rem] sm:mt-[17rem] mt-[8.2rem]"/>
+    <h1 class="font-link-font  text-[4.8rem] tracking-[0.2em] leading-[4rem]">LINK.</h1>
+    <form #loginForm="ngForm" (submit)="onSubmit()" class="w-full text-[1.8rem] font-link-font">
+      <div>
+        <label hidden for="email">E-mail</label>
+        <input name="email" id="email" #email="ngModel" [(ngModel)]="loginModel.username" type="text"
+               placeholder="E-Mail"
+               class="rounded-[1rem] w-full h-[3.6rem]  border-black border mt-[6.3rem] px-[1.3rem]"/>
+      </div>
+      <div>
+        <label hidden for="password">Password</label>
+        <input name="password" id="password" #password="ngModel" [(ngModel)]="loginModel.password" type="password"
+               placeholder="Password"
+               class="rounded-[1rem] w-full h-[3.6rem] border-black border mt-[1.7rem] px-[1.3rem]"/>
+      </div>
+      <div class="sm:px-[6.3rem]">
+        <button type="submit"
+                class="sm:bg-link-green rounded-[1rem] w-full h-[3.6rem] mt-[1.7rem] border-black border sm:border-0 ">
+          Einloggen
+        </button>
+      </div>
+      <div *ngIf="errorMessage">
+        <p class="mt-[1.7rem] text-red-600">
+          {{errorMessage}}
+        </p>
+      </div>
+    </form>
+  </div>
 </div>
 
