@@ -1,39 +1,42 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
 import SpyObj = jasmine.SpyObj;
 import {LoginService} from "../services/login.service";
 import createSpyObj = jasmine.createSpyObj;
-import {of} from "rxjs";
+import {of, throwError} from "rxjs";
 import {RouterTestingModule} from "@angular/router/testing";
 import {ReactiveFormsModule} from "@angular/forms";
 import {By} from "@angular/platform-browser";
+import {routes} from "../app-routing.module";
+import {Location} from "@angular/common";
+import {AutoFocus} from "../utils/auto-focus.directive";
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let loginSpyService: SpyObj<LoginService>;
-
-  beforeEach(async () => {
+  let location: Location;
+  beforeEach(waitForAsync(() => {
     loginSpyService = createSpyObj('LoginService', ['login']);
-    loginSpyService.login.and.returnValue(of({id: '', fullName: '', username: '', authKey: ''}))
+    loginSpyService.login.and.returnValue(of({id: '', fullName: '', username: '', authKey: ''}));
 
-    await TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
-      imports: [RouterTestingModule, ReactiveFormsModule],
+    TestBed.configureTestingModule({
+      declarations: [ LoginComponent, AutoFocus ],
+      imports: [RouterTestingModule.withRoutes(routes), ReactiveFormsModule],
       providers: [{provide: LoginService, useValue: loginSpyService}]
     })
     .compileComponents();
-  });
-
-  beforeEach(() => {
+    location = TestBed.inject(Location);
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
+
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(new AutoFocus(fixture.debugElement.query(By.css('#login_button')))).toBeTruthy();
   });
 
   it('Should Not Login When Inputs Are Empty', () => {
@@ -46,26 +49,85 @@ describe('LoginComponent', () => {
   });
 
   it('Should login when inputs are valid', () => {
-
+    //given
+    component.loginForm.setValue({
+      username: 'test@test.de',
+      password: 'testes'
+    });
+    const button = fixture.debugElement.query(By.css('#login_button'));
+    fixture.detectChanges();
+    //when
+    button.nativeElement.click();
+    // Then
+    expect(loginSpyService.login).toHaveBeenCalled();
   });
 
-  it('Should reroute to welcome page after successfull login', () => {
+  it('Should reroute to welcome page after successfull login', fakeAsync(() => {
+    //given
+    component.loginForm.setValue({
+      username: 'test@test.de',
+      password: 'testes'
+    });
+    const button = fixture.debugElement.query(By.css('#login_button'));
+    fixture.detectChanges();
+    //when
+    button.nativeElement.click();
+    tick();
+    // Then
+    expect(location.path()).toBe('/home');
+  }));
 
-  });
-
-  it('Should display error message when login failed', () => {
-
-  });
+  it('Should display error message when login failed', fakeAsync(() => {
+    //given
+    loginSpyService.login.and.returnValue(throwError(() => new Error('Some error message')));
+    component.loginForm.setValue({
+      username: 'test@test.de',
+      password: 'testes'
+    });
+    const button = fixture.debugElement.query(By.css('#login_button'));
+    fixture.detectChanges();
+    //when
+    button.nativeElement.click();
+    fixture.detectChanges();
+    const errorMessage = fixture.debugElement.query(By.css('#login_error'));
+    // Then
+    expect(loginSpyService.login).toHaveBeenCalled();
+    expect(component.errorMessage).toBeTruthy();
+    expect(errorMessage).toBeTruthy();
+  }));
 
   it('Should not login when only email is set', () => {
-
+    component.loginForm.setValue({
+      username: 'test@test.de',
+      password: ''
+    });
+    const button = fixture.debugElement.query(By.css('#login_button'));
+    fixture.detectChanges();
+    //when
+    button.nativeElement.click();
+    // Then
+    expect(loginSpyService.login).not.toHaveBeenCalled();
   });
 
   it('Should not login when only password is set', () => {
-
+    component.loginForm.setValue({
+      username: '',
+      password: 'testes'
+    });
+    const button = fixture.debugElement.query(By.css('#login_button'));
+    fixture.detectChanges();
+    //when
+    button.nativeElement.click();
+    // Then
+    expect(loginSpyService.login).not.toHaveBeenCalled();
   });
 
   it('autofocus should set to email input', () => {
-
+    //given
+    const usernameElement = fixture.debugElement.query(By.css('#email'));
+    fixture.detectChanges();
+    const elementWithFocus = document.activeElement;
+    expect(usernameElement.query(By.directive(AutoFocus))).toBeTruthy();
+    expect(usernameElement.nativeElement).toEqual(elementWithFocus);
   });
 });
