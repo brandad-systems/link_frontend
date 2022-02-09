@@ -125,10 +125,12 @@ describe('LoginComponent', () => {
   it('autofocus should set to email input', () => {
     //given
     const usernameElement = fixture.debugElement.query(By.css('#email'));
-    fixture.detectChanges();
     const elementWithFocus = document.activeElement;
-    expect(usernameElement.query(By.directive(AutoFocus))).toBeTruthy();
-    expect(usernameElement.nativeElement).toEqual(elementWithFocus);
+    const autofocusDirective = fixture.debugElement.query(By.directive(AutoFocus));
+    expect(autofocusDirective).toBeTruthy();
+    expect(usernameElement).toBeTruthy();
+    expect(elementWithFocus).toEqual(usernameElement.nativeElement);
+    expect(elementWithFocus).toEqual(autofocusDirective.nativeElement);
   });
 
   it('labels (email/password) should be hidden on form load', () => {
