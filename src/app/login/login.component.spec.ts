@@ -130,4 +130,38 @@ describe('LoginComponent', () => {
     expect(usernameElement.query(By.directive(AutoFocus))).toBeTruthy();
     expect(usernameElement.nativeElement).toEqual(elementWithFocus);
   });
+
+  it('labels (email/password) should be hidden on form load', () => {
+    //given
+    expect(fixture.debugElement.query(By.css('#emailLabel'))
+      .nativeElement.hasAttribute('hidden')).toEqual(true);
+
+    expect(fixture.debugElement.query(By.css('#passwordLabel'))
+      .nativeElement.hasAttribute('hidden')).toEqual(true);
+  });
+
+  it('Input fields(email/password) should not be initialized on first time load', () => {
+    //given
+    expect(fixture.debugElement.query(By.css('#email'))
+      .nativeElement.value).toBe('');
+
+    expect(fixture.debugElement.query(By.css('#password'))
+      .nativeElement.value).toBe('');
+  });
+
+  it('username does not contain a empty space by mistake', () => {
+    // Given:
+    component.loginForm.setValue({
+      username: 'test@test.de ',
+      password: 'testes'
+    });
+    const button = fixture.debugElement.query(By.css('#login_button'));
+    fixture.detectChanges();
+
+    // When
+    button.nativeElement.click();
+    // Then
+    expect(loginSpyService.login).toHaveBeenCalledOnceWith({username:'test@test.de',password:'testes'});
+
+  });
 });
