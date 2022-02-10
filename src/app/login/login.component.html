@@ -8,17 +8,18 @@
       <div>
         <label id="emailLabel" hidden for="email">E-mail</label>
       <input name="email" id="email" formControlName = "username" type="text" autofocus
-             placeholder="E-Mail" class="rounded-[1rem] w-full h-[3.6rem]  border-black border mt-[6.3rem] px-[1.3rem]"/>
+             placeholder="E-Mail"
+             class="rounded-[1rem] w-full h-[3.6rem]  border-black border mt-[6.3rem] px-[1.3rem] focus:outline-none focus:ring focus:ring-link-green"/>
       </div>
       <div>
         <label id="passwordLabel" hidden for="password">Password</label>
         <input name="password" id="password" formControlName = "password" type="password"
                placeholder="Password"
-               class="rounded-[1rem] w-full h-[3.6rem] border-black border mt-[1.7rem] px-[1.3rem]"/>
+               class="rounded-[1rem] w-full h-[3.6rem] border-black border mt-[1.7rem] px-[1.3rem] focus:outline-none focus:ring focus:ring-link-green"/>
       </div>
       <div class="sm:px-[6.3rem]">
         <button id="login_button" type="submit" [disabled]="loginForm.invalid"
-                class="sm:bg-link-green rounded-[1rem] w-full h-[3.6rem] mt-[1.7rem] border-black border sm:border-0 disabled:bg-gray-300 ">
+                class="bg-link-green rounded-[1rem] w-full h-[3.6rem] mt-[1.7rem] disabled:bg-gray-300 ">
           Einloggen
         </button>
       </div>
