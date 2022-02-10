@@ -2,7 +2,7 @@ import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular
 
 import { LoginComponent } from './login.component';
 import SpyObj = jasmine.SpyObj;
-import {LoginService} from "../services/login.service";
+import {UserRepositoryService} from "../services/user-repository.service";
 import createSpyObj = jasmine.createSpyObj;
 import {of, throwError} from "rxjs";
 import {RouterTestingModule} from "@angular/router/testing";
@@ -15,16 +15,16 @@ import {AutoFocus} from "../utils/auto-focus.directive";
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let loginSpyService: SpyObj<LoginService>;
+  let UserRepositorySpyService: SpyObj<UserRepositoryService>;
   let location: Location;
   beforeEach(waitForAsync(() => {
-    loginSpyService = createSpyObj('LoginService', ['login']);
-    loginSpyService.login.and.returnValue(of({id: '', fullName: '', username: '', authKey: ''}));
+    UserRepositorySpyService = createSpyObj('UserRepositoryService', ['login']);
+    UserRepositorySpyService.login.and.returnValue(of({id: '', fullName: '', username: '', authKey: ''}));
 
     TestBed.configureTestingModule({
       declarations: [ LoginComponent, AutoFocus ],
       imports: [RouterTestingModule.withRoutes(routes), ReactiveFormsModule],
-      providers: [{provide: LoginService, useValue: loginSpyService}]
+      providers: [{provide: UserRepositoryService, useValue: UserRepositorySpyService}]
     })
     .compileComponents();
     location = TestBed.inject(Location);
@@ -45,7 +45,7 @@ describe('LoginComponent', () => {
     // When
     button.nativeElement.click();
     // Then
-    expect(loginSpyService.login).not.toHaveBeenCalled();
+    expect(UserRepositorySpyService.login).not.toHaveBeenCalled();
   });
 
   it('Should login when inputs are valid', () => {
@@ -59,7 +59,7 @@ describe('LoginComponent', () => {
     //when
     button.nativeElement.click();
     // Then
-    expect(loginSpyService.login).toHaveBeenCalled();
+    expect(UserRepositorySpyService.login).toHaveBeenCalled();
   });
 
   it('Should reroute to welcome page after successfull login', fakeAsync(() => {
@@ -79,7 +79,7 @@ describe('LoginComponent', () => {
 
   it('Should display error message when login failed', fakeAsync(() => {
     //given
-    loginSpyService.login.and.returnValue(throwError(() => new Error('Some error message')));
+    UserRepositorySpyService.login.and.returnValue(throwError(() => new Error('Some error message')));
     component.loginForm.setValue({
       username: 'test@test.de',
       password: 'testes'
@@ -91,7 +91,7 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
     const errorMessage = fixture.debugElement.query(By.css('#login_error'));
     // Then
-    expect(loginSpyService.login).toHaveBeenCalled();
+    expect(UserRepositorySpyService.login).toHaveBeenCalled();
     expect(component.errorMessage).toBeTruthy();
     expect(errorMessage).toBeTruthy();
   }));
@@ -106,7 +106,7 @@ describe('LoginComponent', () => {
     //when
     button.nativeElement.click();
     // Then
-    expect(loginSpyService.login).not.toHaveBeenCalled();
+    expect(UserRepositorySpyService.login).not.toHaveBeenCalled();
   });
 
   it('Should not login when only password is set', () => {
@@ -119,7 +119,7 @@ describe('LoginComponent', () => {
     //when
     button.nativeElement.click();
     // Then
-    expect(loginSpyService.login).not.toHaveBeenCalled();
+    expect(UserRepositorySpyService.login).not.toHaveBeenCalled();
   });
 
   it('autofocus should set to email input', () => {
@@ -163,7 +163,7 @@ describe('LoginComponent', () => {
     // When
     button.nativeElement.click();
     // Then
-    expect(loginSpyService.login).toHaveBeenCalledOnceWith({username:'test@test.de',password:'testes'});
+    expect(UserRepositorySpyService.login).toHaveBeenCalledOnceWith({username:'test@test.de',password:'testes'});
 
   });
 });

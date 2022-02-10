@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginModel} from "../../model/login.model";
-import {LoginService} from "../services/login.service";
+import {UserRepositoryService} from "../services/user-repository.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
@@ -20,11 +20,15 @@ export class LoginComponent implements OnInit {
 
   loginModel: LoginModel = {username: '', password: ''};
 
-  constructor(private readonly loginService: LoginService, private readonly router: Router, private formBuilder: FormBuilder) {
+  constructor(private readonly loginService: UserRepositoryService, private readonly router: Router, private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
-
+      this.loginService.isAuthenticated().then(isValid => {
+        if(isValid){
+          this.router.navigate(['/home'])
+        }
+      })
   }
 
   onSubmit(): void {

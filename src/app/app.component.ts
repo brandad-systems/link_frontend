@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'link_frontend';
+
+  checkAccessToken(){
+    //prüfe access token auf gültigkeit
+    //route weiter auf Welcome Page
+  }
 }
