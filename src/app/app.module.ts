@@ -5,11 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { HomeComponent } from './home/home.component';
 import {AutoFocus} from "./utils/auto-focus.directive";
 import {AuthGuard} from "./guards/auth.guard";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
+import {HttpInterceptorService} from "./services/http-interceptor.service";
 
 
 
@@ -32,7 +33,12 @@ import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
     AuthGuard,
     {provide: JWT_OPTIONS,
     useValue: JWT_OPTIONS
-    }, JwtHelperService
+    }, JwtHelperService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi:true
+    }
   ],
   bootstrap: [AppComponent]
 })

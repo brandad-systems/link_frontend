@@ -32,13 +32,14 @@ export class UserRepositoryService {
   public async isAuthenticated(): Promise<boolean> {
     const token = localStorage.getItem('token');
     if (token && !this.jwtHelper.isTokenExpired(token)) {
-      return lastValueFrom(this.httpClient.get<UserModel>(`${this.baseUrl}/admin/user/details`,
-        {observe: 'response', headers: {'Authorization': "Bearer " + token}})
+      if(this.userModel) {
+        return true;
+      }
+      return lastValueFrom(this.httpClient.get<UserModel>(`${this.baseUrl}/admin/user/details`)
         .pipe(map(response => {
-          let body = response.body!;
-          this.userModel.id = body.id;
-          this.userModel.username = body.username;
-          this.userModel.fullName = body.fullName;
+          this.userModel.id = response.id;
+          this.userModel.username = response.username;
+          this.userModel.fullName = response.fullName;
           return true;
         }), catchError(error => of(false))));
     } else {
