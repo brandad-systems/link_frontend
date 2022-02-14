@@ -78,4 +78,8 @@ context('login', () => {
     cy.get('#email').should('not.exist')
     cy.location('pathname').should('include', 'home')
   })
+
+  it('should compare visualy', () => {
+    cy.compareSnapshot('login', 0.01)
+  })
 });

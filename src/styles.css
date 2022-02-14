@@ -4,3 +4,6 @@
 @tailwind utilities;
 
 /*Styles*/
+* {
+  color: aqua;
+}
