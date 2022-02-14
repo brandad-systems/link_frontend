@@ -125,6 +125,7 @@ describe('LoginComponent', () => {
   it('autofocus should set to email input', () => {
     //given
     const usernameElement = fixture.debugElement.query(By.css('#email'));
+
     const elementWithFocus = document.activeElement;
     const autofocusDirective = fixture.debugElement.query(By.directive(AutoFocus));
     expect(autofocusDirective).toBeTruthy();
