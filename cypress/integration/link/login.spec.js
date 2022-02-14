@@ -1,3 +1,6 @@
+require('cypress-plugin-tab');
+
+
 context('login', () => {
 
   const errorMessage = 'Leider konnten wir Sie nicht einloggen, da Sie falsche Daten eingegeben haben. Bitte überprüfen Sie Ihre Angaben noch einmal.'
@@ -76,6 +79,13 @@ context('login', () => {
     //cy.wait(500)
     cy.visit('localhost:4200')
     cy.get('#email').should('not.exist')
+    cy.location('pathname').should('include', 'home')
+  })
+
+  it('testing tab pressing in', () => {
+    cy.get('#email').type('ada.lovelace@nix.io').tab().type('Test12345_')
+    cy.get('#login_button').click()
+
     cy.location('pathname').should('include', 'home')
   })
 });
