@@ -11,6 +11,7 @@ import {AutoFocus} from "./utils/auto-focus.directive";
 import {AuthGuard} from "./guards/auth.guard";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {HttpInterceptorService} from "./services/http-interceptor.service";
+import { ProductAddComponent } from './product-add/product-add.component';
 
 
 
@@ -19,7 +20,8 @@ import {HttpInterceptorService} from "./services/http-interceptor.service";
     AppComponent,
     LoginComponent,
     HomeComponent,
-    AutoFocus
+    AutoFocus,
+    ProductAddComponent
 
   ],
   imports: [
