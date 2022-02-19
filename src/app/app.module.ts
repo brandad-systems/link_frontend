@@ -12,6 +12,7 @@ import {AuthGuard} from "./guards/auth.guard";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {HttpInterceptorService} from "./services/http-interceptor.service";
 import { ProductAddComponent } from './product-add/product-add.component';
+import { CarouselComponent } from './carousel/carousel.component';
 
 
 
@@ -21,7 +22,8 @@ import { ProductAddComponent } from './product-add/product-add.component';
     LoginComponent,
     HomeComponent,
     AutoFocus,
-    ProductAddComponent
+    ProductAddComponent,
+    CarouselComponent
 
   ],
   imports: [

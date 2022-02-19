@@ -38,33 +38,55 @@
 
     <div id="add-picture"
          class="bg-white w-full rounded-[1rem] border border-[#CDCDCD] sm:h-[30rem] grid justify-items-center mt-[1.5rem]">
-      <img class="h-[5rem] w-[5rem] place-self-center" src="/assets/images/add-picture.svg" alt=""/>
-    </div>
 
+      <label class="h-[5rem] w-[5rem] ">
+        <img  src="/assets/images/add-picture.svg">
+        <input type="file" name="myfile" multiple accept="image/*" class="hidden" (change)="uploadImages($event)">
+      </label>
+
+
+        <carousel class="w-full sm:h-[30rem]"[slides]="slides"></carousel>
+     <!-- <div *ngFor="let image of images">
+        <img [src]="image.id" />
+      </div>-->
+<!--
+      <img class="h-[5rem] w-[5rem] place-self-center" src="/assets/images/add-picture.svg" alt="" (change)="uploadFile($event)"/>
+-->
+    </div>
+    <form [formGroup] ="productAddForm" (ngSubmit)="onSubmit()" class="">
     <div class="grid justify-items-center w-screen sm:w-[60rem] font-link-font text-[1.3rem]">
       <div id="insert-product-info"
            class="bg-white w-full rounded-[1rem] border border-[#CDCDCD] sm:h-[36.7rem] grid mt-[1.5rem]">
-        <div class="w-[43.5rem] justify-self-center">
-          <div class="flex flex-row w-full">
+        <div class="grid grid-cols-3 gap-2 w-[43.5rem] justify-self-center">
             <label class="mt-[3.7rem]" for="productName">Name</label>
-            <input id="productName" type="text" autofocus
+            <input id="productName" formControlName = "title" type="text" autofocus
                    placeholder="Was möchtest du verleihen?"
-                   class="rounded-[1rem] w-full h-[3.6rem]  border-black border mt-[3.7rem] px-[1.3rem] focus:outline-none focus:ring focus:ring-link-green"/>
-            <div class="w-full mr-[3.3rem]">
-              <label class="float-right mt-[3.7rem]" for="productPrice">Preis pro Tag</label>
-              <input id="productPrice" type="text"
-                     placeholder="Preis pro Tag"
-                     class="rounded-[1rem] w-full h-[3.6rem]  border-black border mt-[3.7rem] px-[1.3rem] focus:outline-none focus:ring focus:ring-link-green"/>
+                   class=" col-span-2 rounded-[1rem] w-full h-[3.6rem]  bg-gray-300 mt-[3.7rem] px-[1.3rem] focus:outline-none focus:ring focus:ring-link-green"/>
+          <hr class="col-span-3">
+          <label for="productKategorie">Kategorie</label>
+          <select id="productKategorie" formControlName = "category"class=" col-span-2 rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-min max-w-full bg-gray-300 ">
+            <option>Werkzeug</option>
+            <option>Werkzeug</option>
+            <option>Werkzeug</option>
+            <option>Werkzeug</option>
+          </select>
 
-            </div>
-          </div>
-          <hr>
-          <label>Kategorie</label>
-          <hr>
-          <label>Beschreibung</label>
-          <hr>
-          <label>Zustand</label>
+          <hr class="col-span-3">
+          <label for="productBeschreibung">Beschreibung</label>
+          <textarea formControlName = "description" class="col-span-2 rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green resize-none bg-gray-300" id="productBeschreibung">   </textarea>
+          <hr class="col-span-3">
+          <label for="productZustand">Zustand</label>
+          <select id="productZustand" formControlName = "condition"class="rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-min max-w-full bg-gray-300">
+            <option>Wie neu</option>
+            <option>Sehr gut</option>
+            <option>gut</option>
+            <option>Akzeptabel</option>
+          </select>
+          <hr class="col-span-3">
+          <label for="productLieferung">Lieferung</label>
+          <input id="productLieferung" formControlName = "delivery" class="focus:outline-none focus:ring focus:ring-link-green mb-[2.5rem]" type="checkbox">
         </div>
+
       </div>
     </div>
     <!--<form [formGroup] ="loginForm" (ngSubmit)="onSubmit()" class="w-full text-[1.8rem] font-link-font">
@@ -92,6 +114,16 @@
         </p>
       </div>
     </form>-->
+
+    <div class="grid grid-cols-3">
+      <button id="login_button" type="submit" [disabled]="productAddForm.invalid"
+              class=" col-start-3  bg-link-green rounded-[1rem] w-[20rem] mt-[0.5rem] h-[3.6rem] disabled:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-500">
+        Product Einstellen
+      </button>
+    </div>
+    </form>
   </div>
+
+
 </div>
 
