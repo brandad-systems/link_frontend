@@ -12,7 +12,7 @@ import {UserModel} from "../../model/user.model";
 export class UserRepositoryService {
 
   userModel: UserModel = {id: '', username: '', fullName: ''};
-  baseUrl: string = "http://localhost:8080/api";
+  baseUrl: string = "http://localhost:8080/api/v1";
 
 
   constructor(private readonly httpClient: HttpClient, private readonly jwtHelper: JwtHelperService) {
