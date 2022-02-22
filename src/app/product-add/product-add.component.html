@@ -40,7 +40,7 @@
     <div id="add-picture"
          class="bg-white w-full rounded-[1rem] border border-[#CDCDCD] aspect-video mt-[1.5rem]">
 
-      <label  *ngIf="slides.length == 0" class="h-full w-full block">
+      <label *ngIf="slides.length == 0" class="h-full w-full block">
         <img class="h-full w-[5rem] m-auto" src="/assets/images/add-picture.svg">
         <input type="file" name="myfile" multiple accept="image/*" class="hidden"
                (change)="uploadImages($event)">
@@ -55,47 +55,60 @@
       <div class="grid justify-items-center w-screen sm:w-[60rem] font-link-font text-[1.3rem]">
         <div id="insert-product-info"
              class="bg-white w-full rounded-[1rem] border border-[#CDCDCD] sm:h-[36.7rem] grid mt-[1.5rem]">
-          <div class="grid grid-cols-3 gap-2 w-[43.5rem] justify-self-center">
-            <label class="mt-[3.7rem]" for="productName">Name</label>
-            <input id="productName" formControlName="title" type="text" autofocus
+          <div class="grid grid-cols-[1fr_2fr] gap-2 w-[43.5rem] justify-self-center">
+            <label class="mt-[3.7rem] h-[3.6rem] leading-[3.6rem]" for="productName">Name</label>
+            <input class="placeholder:text-[#9ca3af]" id="productName" formControlName="title" type="text" autofocus
                    placeholder="Was möchtest du verleihen?"
-                   class=" col-span-2 rounded-[1rem] w-full h-[3.6rem]  bg-[#EFEFF0] mt-[3.7rem] px-[1.3rem] focus:outline-none focus:ring focus:ring-link-green"/>
-            <hr class="col-span-3">
-            <label for="productKategorie">Kategorie</label>
+                   class="rounded-[1rem] w-full h-[3.6rem]  bg-[#EFEFF0] mt-[3.7rem] px-[1.3rem] focus:outline-none focus:ring focus:ring-link-green"/>
+            <hr class="col-span-2">
+            <label class="h-[3.6rem] leading-[3.6rem]" for="productKategorie">Kategorie</label>
             <select id="productKategorie" formControlName="category"
-                    class=" col-span-2 rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-min max-w-full bg-[#EFEFF0] ">
+                    class="px-[1.3rem] h-[3.6rem] rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-full bg-[#EFEFF0] ">
+              <option value="" disabled selected hidden>Bitte auswählen...</option>
               <option>Werkzeug</option>
               <option>Werkzeug</option>
               <option>Werkzeug</option>
               <option>Werkzeug</option>
             </select>
 
-            <hr class="col-span-3">
-            <label for="productBeschreibung">Beschreibung</label>
+            <hr class="col-span-2">
+            <label class="h-[3.6rem] leading-[3.6rem]" for="productBeschreibung">Beschreibung</label>
             <textarea formControlName="description"
-                      class="col-span-2 rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green resize-none bg-[#EFEFF0]"
-                      id="productBeschreibung">   </textarea>
-            <hr class="col-span-3">
-            <label for="productZustand">Zustand</label>
+                      class="leading-[3.6rem] px-[1.3rem]  rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green resize-none bg-[#EFEFF0] h-[5.9rem]"
+                      id="productBeschreibung" placeholder="Bitte beschreibe dein Produkt">   </textarea>
+            <hr class="col-span-2">
+            <label class="h-[3.6rem] leading-[3.6rem]" for="productZustand">Zustand</label>
             <select id="productZustand" formControlName="condition"
-                    class="rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-min max-w-full bg-[#EFEFF0]">
+                    class="px-[1.3rem] h-[3.6rem] w-[15rem] rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-min max-w-full bg-[#EFEFF0] ">
+              <option value="" disabled selected hidden>Bitte auswählen...</option>
               <option>Wie neu</option>
               <option>Sehr gut</option>
               <option>gut</option>
               <option>Akzeptabel</option>
             </select>
-            <hr class="col-span-3">
-            <label for="productPreis">Preis pro Tag</label>
-            <input id="productPreis" formControlName="delivery"
-                   class="rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-min max-w-full bg-[#EFEFF0]" type="number" min="1" step="any">
+            <hr class="col-span-2">
+            <label class="h-[3.6rem] leading-[3.6rem]" for="productPreis">Preis pro Tag</label>
+            <!--<input id="productPreis" formControlName="delivery"
+                   class="rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-[15rem] text-right bg-[#EFEFF0] px-[1.3rem] h-[3.6rem] mb-[2.5rem]"
+                   type="number" min="0.00" max="50.00" value='0.00' placeholder='0.00' step="0.01">-->
+            <input  id="productPreis"
+                   matInput
+                   type="text"
+                    placeholder="Test Price"
+                   [ngModel]="pricePerDay  | currency:'EUR':'symbol':'1.2'"
+                    ng-model-options="{updateOn:'blur'}"
+                   (ngModelChange)="pricePerDay=$event" name="inputField" type="text" formControlName="delivery"
+                   class="rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-[15rem] text-right bg-[#EFEFF0] px-[1.3rem] h-[3.6rem] mb-[2.5rem]">
+
+
           </div>
 
         </div>
       </div>
 
-      <div class="grid grid-cols-3">
+      <div class="grid">
         <button id="login_button" type="submit" [disabled]="productAddForm.invalid"
-                class=" col-start-3  bg-link-green rounded-[1rem] w-[20rem] mt-[0.5rem] h-[3.6rem] disabled:disabled:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-500">
+                class="justify-self-end mt-[3.6rem] bg-link-green rounded-[1rem] w-[20rem] h-[3.6rem] disabled:disabled:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-500">
           Produkt Einstellen
         </button>
       </div>
