@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Product} from "../../model/product.model";
 import {ProductService} from "../services/product.service";
 import {Router} from "@angular/router";
-import {FileUploadService} from "../services/FileUploadService";
+import {FileUploadService} from "../services/file-upload.service";
 import {HttpResponse} from "@angular/common/http";
 import {ProductImage} from "../../model/productImages.model";
 import {Slide} from "../carousel/carousel.interface";
