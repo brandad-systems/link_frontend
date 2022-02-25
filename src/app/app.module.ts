@@ -13,6 +13,8 @@ import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {HttpInterceptorService} from "./services/http-interceptor.service";
 import { ProductAddComponent } from './product-add/product-add.component';
 import { CarouselComponent } from './carousel/carousel.component';
+import {CURRENCY_MASK_CONFIG, NgxCurrencyModule} from "ngx-currency";
+import { HeaderComponent } from './header/header.component';
 
 
 
@@ -23,7 +25,8 @@ import { CarouselComponent } from './carousel/carousel.component';
     HomeComponent,
     AutoFocus,
     ProductAddComponent,
-    CarouselComponent
+    CarouselComponent,
+    HeaderComponent
 
   ],
   imports: [
@@ -31,7 +34,8 @@ import { CarouselComponent } from './carousel/carousel.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxCurrencyModule
   ],
   providers: [
     AuthGuard,
@@ -42,6 +46,10 @@ import { CarouselComponent } from './carousel/carousel.component';
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
       multi:true
+    },
+    {
+      provide: CURRENCY_MASK_CONFIG,
+      useValue: {suffix: ' €', precision: 2, align: 'right', allowNegative: false, allowZero: false, prefix: '', decimal: ',' ,  thousands: '.', nullable: true}
     }
   ],
   bootstrap: [AppComponent]

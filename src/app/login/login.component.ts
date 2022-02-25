@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {LoginModel} from "../../model/login.model";
+import {LoginRequestModel} from "../../model/login-request.model";
 import {UserRepositoryService} from "../services/user-repository.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     password:['', Validators.required]
   });
 
-  loginModel: LoginModel = {username: '', password: ''};
+  loginData: LoginRequestModel = {username: '', password: ''};
 
   constructor(private readonly loginService: UserRepositoryService, private readonly router: Router, private formBuilder: FormBuilder) {
   }
@@ -32,9 +32,9 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.loginModel.username = this.loginForm.get('username')?.value.trim();
-    this.loginModel.password = this.loginForm.get('password')?.value;
-    this.loginService.login(this.loginModel).subscribe(result => {
+    this.loginData.username = this.loginForm.get('username')?.value.trim();
+    this.loginData.password = this.loginForm.get('password')?.value;
+    this.loginService.login(this.loginData).subscribe(result => {
         console.log(result);
         this.router.navigate(['home']);
         this.errorMessage = '';

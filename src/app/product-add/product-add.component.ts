@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Product} from "../../model/product.model";
+import {ProductRequestModel} from "../../model/product-request.model";
 import {ProductService} from "../services/product.service";
 import {Router} from "@angular/router";
 import {FileUploadService} from "../services/file-upload.service";
 import {HttpResponse} from "@angular/common/http";
-import {ProductImage} from "../../model/productImages.model";
-import {Slide} from "../carousel/carousel.interface";
+import {ProductImage} from "../../model/product-image.model";
+import {CategoryModel} from "../../model/category.model";
+import {ConditionListModel} from "../../model/condition-list.model";
 
 @Component({
   selector: 'app-product-add',
@@ -23,9 +24,13 @@ export class ProductAddComponent implements OnInit {
       category: ['', Validators.required],
       description: ['', Validators.required],
       condition: ['', Validators.required],
-      delivery: ['', Validators.required]
+      delivery: ['', Validators.required],
+      pricePerDay: ['',Validators.required]
     }
   );
+  currentSlide:number = 0;
+  categoryList:CategoryModel []=[];
+  conditionList: string []=[];
 
 
 
@@ -34,14 +39,15 @@ export class ProductAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getCategoriesList();
+    this.getConditionList();
   }
 
   onSubmit() {
-    let product: Product = this.productAddForm.value;
-    this.productService.addProduct(product).subscribe(result =>
+    let product: ProductRequestModel = this.productAddForm.value;
+    this.productService.createProduct(product).subscribe(result =>
       this.router.navigate(['home'])
     );
-
 
   }
 
@@ -64,5 +70,22 @@ export class ProductAddComponent implements OnInit {
       }
     );
   }
+
+  getCategoriesList(){
+    this.productService.getCategories().subscribe(result =>{
+      this.categoryList=[...this.categoryList, ...result];
+    });
+  }
+
+  private getConditionList() {
+    this.productService.getConditions().subscribe(result =>{
+      this.conditionList=[...this.conditionList, ...result.conditions];
+    });
+  }
+
+  setCurrentSlide(idx: number) {
+    this.currentSlide = idx;
+  }
+
 
 }

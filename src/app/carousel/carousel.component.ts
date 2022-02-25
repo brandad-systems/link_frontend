@@ -12,7 +12,7 @@ import { trigger, transition, useAnimation } from "@angular/animations";
 export class CarouselComponent implements OnInit {
   @Input() slides!: Slide[];
 
-  currentSlide = 0;
+  @Input() currentSlide = 0;
 
   constructor() {}
 

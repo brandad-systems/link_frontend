@@ -1,36 +1,4 @@
-<div id="header-background" class="hidden sm:block h-[10rem] bg-link-green">
-  <div class="flex flex-row ml-[3.1rem]">
-    <div>
-      <img src="./assets/images/logo.svg" class="h-[4.8rem] w-[4.8rem] mt-[2.5rem]"/>
-    </div>
-    <div>
-      <p class="font-link-font  text-[2.5rem] tracking-[0.2em] leading-[4rem] mt-[3.6rem]">LINK.
-      <p>
-    </div>
-    <div class="ml-[4.8rem]">
-      <p class="font-link-font  text-[1.8rem]   mt-[3.9rem]">Home
-      <p>
-    </div>
-    <div class="ml-[3.6rem]">
-      <p class="font-link-font  text-[1.8rem]   mt-[3.9rem]">Produkte
-      <p>
-    </div>
-    <div class="ml-[3.6rem]">
-      <p class="font-link-font  text-[1.8rem]   mt-[3.9rem]">Anfragen/Buchungen
-      <p>
-    </div>
-    <div class="ml-[3.6rem]">
-      <p class="font-link-font  text-[1.8rem]   mt-[3.9rem]">Kontakt
-      <p>
-    </div>
-    <div class="w-full mr-[3.3rem]">
-      <div class="border border-black rounded-full h-[5rem] w-[5rem] mt-[2.5rem] float-right">
-        <img src="./assets/images/meeple.svg" class="h-[4.8rem] w-[4.8rem]"/>
-      </div>
-    </div>
-  </div>
-</div>
-
+<app-header></app-header>
 <div class="grid place-content-center mt-[5.5rem]">
 
   <div class="grid justify-items-center w-screen sm:w-[60rem] font-link-font text-[1.8rem]">
@@ -40,16 +8,31 @@
     <div id="add-picture"
          class="bg-white w-full rounded-[1rem] border border-[#CDCDCD] aspect-video mt-[1.5rem]">
 
-      <label *ngIf="slides.length == 0" class="h-full w-full block">
+      <label *ngIf="slides.length == 0" class="h-full w-full block cursor-pointer">
         <img class="h-full w-[5rem] m-auto" src="/assets/images/add-picture.svg">
         <input type="file" name="myfile" multiple accept="image/*" class="hidden"
                (change)="uploadImages($event)">
       </label>
-      <carousel *ngIf="slides.length > 0" class="w-full h-full" [slides]="slides"></carousel>
-
+      <carousel *ngIf="slides.length > 0" [currentSlide]="currentSlide" class="w-full h-full" [slides]="slides"></carousel>
     </div>
     <div id="picture-preview"
-         class="bg-white w-full rounded-[1rem] border border-[#CDCDCD] h-[10rem] mt-[1.5rem]">
+         class="bg-white w-full rounded-[1rem] border border-[#CDCDCD] h-[10rem] mt-[1.5rem] flex items-center">
+      <div class="flex overflow-x-auto h-[10rem] flex-grow">
+        <p *ngIf="slides.length == 0">Es sind noch keine Bilder zur Vorschau verfügbar.</p>
+
+        <img *ngFor="let slide of slides; let i = index" [src]="slide.src" class="h-full aspect-video" (click)="setCurrentSlide(i)">
+
+      </div>
+      <label *ngIf="slides.length > 0" class="block cursor-pointer mx-[0.5rem]">
+        <div
+          class=" border border-gray-300 bg-gray-300 rounded-full aspect-square h-[7rem] flex items-center place-content-center">
+          <span class="mt-[-2.5rem] text-[10rem] leading-[5rem] text-white">+</span>
+        </div>
+        <input type="file" name="myfile" multiple accept="image/*" class="hidden"
+               (change)="uploadImages($event)">
+      </label>
+
+
     </div>
     <form [formGroup]="productAddForm" (ngSubmit)="onSubmit()" class="">
       <div class="grid justify-items-center w-screen sm:w-[60rem] font-link-font text-[1.3rem]">
@@ -65,10 +48,9 @@
             <select id="productKategorie" formControlName="category"
                     class="px-[1.3rem] h-[3.6rem] rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-full bg-[#EFEFF0] ">
               <option value="" disabled selected hidden>Bitte auswählen...</option>
-              <option>Werkzeug</option>
-              <option>Werkzeug</option>
-              <option>Werkzeug</option>
-              <option>Werkzeug</option>
+              <optgroup *ngFor="let category of categoryList" label = "{{category.category}}">
+                <option *ngFor="let subcategory of category.subcategories">{{subcategory}}</option>
+              </optgroup>
             </select>
 
             <hr class="col-span-2">
@@ -81,23 +63,14 @@
             <select id="productZustand" formControlName="condition"
                     class="px-[1.3rem] h-[3.6rem] w-[15rem] rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-min max-w-full bg-[#EFEFF0] ">
               <option value="" disabled selected hidden>Bitte auswählen...</option>
-              <option>Wie neu</option>
-              <option>Sehr gut</option>
-              <option>gut</option>
-              <option>Akzeptabel</option>
+              <option *ngFor="let condition of conditionList">{{condition}}</option>
             </select>
             <hr class="col-span-2">
             <label class="h-[3.6rem] leading-[3.6rem]" for="productPreis">Preis pro Tag</label>
-            <!--<input id="productPreis" formControlName="delivery"
-                   class="rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-[15rem] text-right bg-[#EFEFF0] px-[1.3rem] h-[3.6rem] mb-[2.5rem]"
-                   type="number" min="0.00" max="50.00" value='0.00' placeholder='0.00' step="0.01">-->
-            <input  id="productPreis"
-                   matInput
+            <input id="productPreis"
                    type="text"
-                    placeholder="Test Price"
-                   [ngModel]="pricePerDay  | currency:'EUR':'symbol':'1.2'"
-                    ng-model-options="{updateOn:'blur'}"
-                   (ngModelChange)="pricePerDay=$event" name="inputField" type="text" formControlName="delivery"
+                   formControlName="pricePerDay"
+                   currencyMask
                    class="rounded-[1rem] focus:outline-none focus:ring focus:ring-link-green w-[15rem] text-right bg-[#EFEFF0] px-[1.3rem] h-[3.6rem] mb-[2.5rem]">
 
 
